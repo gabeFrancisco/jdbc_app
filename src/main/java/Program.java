@@ -1,8 +1,11 @@
-import java.sql.Connection;
+import exceptions.DbException;
 
 public static void main(String[] args) {
     System.out.println("God bless you!");
 
-    Connection conn = DB.getConn();
-    DB.closeConn();
+    Repository repository = new Repository();
+    repository.getAllDepartments();
+    System.out.println("\n------------------");
+    repository.getAllSellers();
+
 }
