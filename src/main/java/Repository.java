@@ -1,4 +1,5 @@
 import exceptions.DbException;
+import exceptions.DbIntegrityException;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -125,6 +126,24 @@ public class Repository {
             System.out.println("Done! Department updated!");
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        }
+    }
+
+    public void deleteDepartment(int id){
+        try{
+            conn = DB.getConn();
+            ps = conn.prepareStatement("delete from department" +
+                    "where " +
+                    "Id = ?");
+
+            ps.setInt(1, id);
+
+            int rows = ps.executeUpdate();
+
+            System.out.println("Department of ID: " + id + " deleted!");
+        }
+        catch (SQLException e){
+            throw new DbIntegrityException(e.getMessage());
         }
     }
 }
