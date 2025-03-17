@@ -132,6 +132,8 @@ public class Repository {
     public void deleteDepartment(int id){
         try{
             conn = DB.getConn();
+            conn.setAutoCommit(false);
+
             ps = conn.prepareStatement("delete from department" +
                     "where " +
                     "Id = ?");
@@ -143,7 +145,12 @@ public class Repository {
             System.out.println("Department of ID: " + id + " deleted!");
         }
         catch (SQLException e){
-            throw new DbIntegrityException(e.getMessage());
+            try{
+                conn.rollback();
+                throw new DbException("Transaction rollback!");
+            } catch (SQLException e1){
+                throw new DbException("An error occurred during the rollback!");
+            }
         }
     }
 }
