@@ -107,4 +107,24 @@ public class Repository {
             throw new DbException(e.getMessage());
         }
     }
+
+    public void updateDepartment(String name, int id) {
+        try {
+            conn = DB.getConn();
+            ps = conn.prepareStatement("update department "
+                    + "set name = ? "
+                    + "where "
+                    + "id = ?"
+            );
+
+            ps.setString(1, name);
+            ps.setInt(2, id);
+
+            int rows = ps.executeUpdate();
+
+            System.out.println("Done! Department updated!");
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+    }
 }

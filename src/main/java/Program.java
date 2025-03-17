@@ -15,5 +15,8 @@ public static void main(String[] args) {
     repository.insertDepartment("Tools!");
     System.out.println("\n------------------");
     repository.getAllDepartments();
+    System.out.println("\n------------------");
+    repository.updateDepartment("Tools", 5);
+
 
 }
