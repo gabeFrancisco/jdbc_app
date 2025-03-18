@@ -1,3 +1,5 @@
+package dao;
+
 import exceptions.DbException;
 
 import java.io.FileInputStream;

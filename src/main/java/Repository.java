@@ -1,5 +1,5 @@
+import dao.DB;
 import exceptions.DbException;
-import exceptions.DbIntegrityException;
 
 import java.sql.*;
 import java.text.ParseException;
