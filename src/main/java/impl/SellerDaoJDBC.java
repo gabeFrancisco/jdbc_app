@@ -14,7 +14,7 @@ import java.util.List;
 public class SellerDaoJDBC implements SellerDao {
     private Connection conn;
 
-    public SellerDaoJDBC(Connection conn){
+    public SellerDaoJDBC(Connection conn) {
         this.conn = conn;
     }
 
@@ -38,7 +38,7 @@ public class SellerDaoJDBC implements SellerDao {
         PreparedStatement st = null;
         ResultSet rs = null;
 
-        try{
+        try {
             st = conn.prepareStatement("SELECT seller.*,department.Name as DepName " +
                     "FROM seller INNER JOIN department " +
                     "ON seller.DepartmentId = department.Id " +
@@ -47,26 +47,33 @@ public class SellerDaoJDBC implements SellerDao {
             st.setInt(1, id);
             rs = st.executeQuery();
 
-            if(rs.next()){
-                Department dep = new Department();
-                dep.setId(rs.getInt("DepartmentId"));
-                dep.setName(rs.getString("DepName"));
+            if (rs.next()) {
+                Department dep = instantiateDepartment(rs);
 
-                Seller sel = new Seller();
-                sel.setId(rs.getInt("Id"));
-                sel.setName(rs.getString("Name"));
-                sel.setEmail(rs.getString("Email"));
-                sel.setBirthDate(rs.getDate("BirthDate"));
-                sel.setBaseSalary(rs.getDouble("BaseSalary"));
-                sel.setDepartment(dep);
-
-                return sel;
+                return instantiateSeller(rs, dep);
             }
             return null;
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
+    }
+
+    private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
+        Seller sel = new Seller();
+        sel.setId(rs.getInt("Id"));
+        sel.setName(rs.getString("Name"));
+        sel.setEmail(rs.getString("Email"));
+        sel.setBirthDate(rs.getDate("BirthDate"));
+        sel.setBaseSalary(rs.getDouble("BaseSalary"));
+        sel.setDepartment(dep);
+        return sel;
+    }
+
+    private Department instantiateDepartment(ResultSet rs) throws SQLException {
+        Department dep = new Department();
+        dep.setId(rs.getInt("DepartmentId"));
+        dep.setName(rs.getString("DepName"));
+        return dep;
     }
 
     @Override
